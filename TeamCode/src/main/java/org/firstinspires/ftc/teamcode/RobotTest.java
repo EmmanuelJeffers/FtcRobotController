@@ -20,15 +20,15 @@ public class RobotTest extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "frontLeftDrive");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "frontRightDrive");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "backLeftDrive");
-        backRightDrive = hardwareMap.get(DcMotor.class, "backRightDrive");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "leftFront");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "rightFront");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "leftBack");
+        backRightDrive = hardwareMap.get(DcMotor.class, "rightBack");
 
-        frontLeftDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        backRightDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
         intakeMotor = hardwareMap.get(DcMotor.class, "intake");
 
