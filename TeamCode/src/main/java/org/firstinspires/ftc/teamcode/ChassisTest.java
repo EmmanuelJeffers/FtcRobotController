@@ -1,44 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.dfrobot.HuskyLens;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
-
-import java.util.concurrent.TimeUnit;
-
-@TeleOp(name = "BIOBUZZ FULL Robot Test", group = "Test")
-public class RobotTest extends LinearOpMode {
+@TeleOp(name = "Chassis Test", group = "Test")
+public class ChassisTest extends LinearOpMode {
 
     private final ElapsedTime runtime = new ElapsedTime();
-    private final int READ_PERIOD = 1;
 
     private DcMotor frontLeftDrive = null;
     private DcMotor frontRightDrive = null;
     private DcMotor backLeftDrive = null;
     private DcMotor backRightDrive = null;
-    private DcMotor intakeMotor = null;
-    private HuskyLens huskyLens;
 
     @Override
     public void runOpMode() {
-
-        huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
-        Deadline rateLimit = new Deadline(READ_PERIOD, TimeUnit.SECONDS);
-        rateLimit.expire();
-
-        // Check if we can communicate with the camera
-        if (!huskyLens.knock()) {
-            telemetry.addData(">>", "Problem communicating with " + huskyLens.getDeviceName());
-        } else {
-            telemetry.addData(">>", "Husky Lens Found!");
-        }
-
-        huskyLens.selectAlgorithm(HuskyLens.Algorithm.TAG_RECOGNITION);
 
         frontLeftDrive = hardwareMap.get(DcMotor.class, "leftFront");
         frontRightDrive = hardwareMap.get(DcMotor.class, "rightFront");
@@ -50,8 +29,6 @@ public class RobotTest extends LinearOpMode {
         backLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        intakeMotor = hardwareMap.get(DcMotor.class, "intake");
-
         telemetry.addData("Status:", "Initialized");
         telemetry.update();
 
@@ -59,17 +36,6 @@ public class RobotTest extends LinearOpMode {
         runtime.reset();
 
         while (opModeIsActive()) {
-
-            if (!rateLimit.hasExpired()) {
-                continue;
-            }
-            rateLimit.reset();
-
-            HuskyLens.Block[] blocks = huskyLens.blocks();
-            telemetry.addData("Block count", blocks.length);
-            for (int i = 0; i < blocks.length; i++) {
-                telemetry.addData("Block", blocks[i].toString());
-            }
 
             double max;
 
@@ -102,10 +68,7 @@ public class RobotTest extends LinearOpMode {
             backLeftDrive.setPower(backLeftPower);
             backRightDrive.setPower(backRightPower);
 
-            intakeMotor.setPower(gamepad1.left_trigger);
-
             telemetry.addData("Status:", "Run Time: " + runtime.toString());
-            telemetry.addData("Intake Power:", "%4.2f", intakeMotor.getPower());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", frontLeftPower, frontRightPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", backLeftPower, backRightPower);
             telemetry.update();
